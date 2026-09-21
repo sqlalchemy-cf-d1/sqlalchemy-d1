@@ -67,7 +67,7 @@ Everything else comes from `sqlalchemy-cloudflare-d1` unchanged. That includes t
 
 Tables **created through SQLAlchemy** are identical to the ones upstream creates. A `DateTime` column is declared as `TEXT` and a `Boolean` column as `INTEGER`, so they are reflected as text and integer afterwards. Values still round trip correctly when you use the same `Table` object.
 
-Tables created with plain SQL and a `DATETIME` column, which is the normal case for D1, are reflected as dates. A table reflected from D1 keeps its declared types when SQLAlchemy creates it again.
+Tables created with plain SQL and a `DATETIME` column, which is the normal case for D1, are reflected as dates. A table reflected from D1 keeps its declared types when SQLAlchemy creates it again on D1. On another database the same columns compile like SQLAlchemy's generic date and boolean types.
 
 Only the first word of a declared type is matched, so `TIMESTAMP WITH TIME ZONE` is a date and `UPDATED_INT` is an integer.
 

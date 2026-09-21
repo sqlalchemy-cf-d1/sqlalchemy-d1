@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-* Reflection of columns declared as `DATETIME`, `TIMESTAMP`, `DATE`, `TIME`, `BOOLEAN` or `BOOL`. They are reflected as the new types in `sqlalchemy_d1.types`, which keep the declared name, so Apache Superset marks those columns as dates and booleans. Generic types compile the same as upstream, so tables created through SQLAlchemy are still declared as `TEXT` and `INTEGER`.
+* Reflection of columns declared as `DATETIME`, `TIMESTAMP`, `DATE`, `TIME`, `BOOLEAN` or `BOOL`. They are reflected as the new types in `sqlalchemy_d1.types`, which keep the declared name on the `d1` dialect, so Apache Superset marks those columns as dates and booleans. On other dialects they compile like the generic types. Generic types compile the same as upstream, so tables created through SQLAlchemy are still declared as `TEXT` and `INTEGER`.
 * `autoincrement` on reflected columns. It is true only for a single primary key column declared as `INTEGER`, in a table that is not `WITHOUT ROWID`.
 * `get_view_names`, `get_view_definition`, and `get_schema_names` returning `main`. Upstream has none of these.
 * Tables and views that start with `_cf_` are hidden from the table and view lists.
