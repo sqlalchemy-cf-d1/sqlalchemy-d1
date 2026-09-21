@@ -13,6 +13,8 @@ maintainers = [
     {name = "Daniel Alyoshin",email = "daniel.alyoshin@gmail.com"}
 ]
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
