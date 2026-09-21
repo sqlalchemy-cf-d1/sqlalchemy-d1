@@ -33,19 +33,6 @@ class D1Dialect(CloudflareD1Dialect):
     name = "d1"
     supports_statement_cache = True
 
-    def create_connect_args(self, url):
-        # URL format: d1://<account_id>:<api_token>@<database_id>
-        # Query parameters are ignored. Upstream passes them to the driver,
-        # where base_url would send the API token to any host.
-        return (
-            (),
-            {
-                "account_id": url.username,
-                "api_token": url.password,
-                "database_id": url.host,
-            },
-        )
-
     @reflection.cache
     def get_schema_names(self, connection, **kwargs):
         # D1 is built on SQLite, which only uses one schema

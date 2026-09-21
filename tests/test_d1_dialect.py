@@ -94,23 +94,6 @@ class D1DialectTestSuite(unittest.TestCase):
             },
         )
 
-    def test_create_connect_args_ignores_query_parameters(self):
-        url = make_url(
-            "d1://acct:tok@dbid?base_url=http://169.254.169.254/x&timeout=1"
-        )
-
-        pos, kw = self.dialect.create_connect_args(url)
-
-        self.assertEqual(pos, ())
-        self.assertEqual(
-            kw,
-            {
-                "account_id": "acct",
-                "api_token": "tok",
-                "database_id": "dbid",
-            },
-        )
-
     def test_get_schema_names_returns_main(self):
         conn = DummyConnection(lambda query, *args, **kwargs: DummyResult([]))
 

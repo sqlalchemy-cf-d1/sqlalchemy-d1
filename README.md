@@ -51,7 +51,7 @@ In Superset, use the same URL as the SQLAlchemy URI of the database connection.
 
 | Feature | Description |
 |---------|-------------|
-| `d1://` name | Registers the upstream dialect under the `d1` name that Superset uses. Only the account, token and database ID are read from the URL. Query parameters are ignored. |
+| `d1://` name | Registers the upstream dialect under the `d1` name that Superset uses. |
 | Date and boolean reflection | Columns declared as `DATETIME`, `TIMESTAMP`, `DATE`, `TIME`, `BOOLEAN` or `BOOL` are reflected as the types in `sqlalchemy_d1.types`. They behave like the upstream date and boolean types and keep the declared name. Superset reads that name to decide if a column is a date. Upstream reflects these columns as `TEXT`. |
 | `DECIMAL` reflection | Columns declared as `DECIMAL` are reflected as numeric. Upstream reflects them as `TEXT`. |
 | `autoincrement` | Reflected columns report `autoincrement`. It is true only for the column SQLite fills in by itself: a single primary key column declared as `INTEGER`, in a table that is not `WITHOUT ROWID`. |
