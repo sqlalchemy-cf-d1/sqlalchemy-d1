@@ -1,7 +1,7 @@
 [project]
 name = "sqlalchemy-d1"
-version = "0.1.0"
-description = ""
+version = "0.2.0"
+description = "SQLAlchemy dialect for Cloudflare D1"
 authors = [
     {name = "Chad Rossouw",email = "chadrossouw7247@gmail.com"},
     {name = "Murphy Lee",email = "murphylee2004@gmail.com"},
@@ -9,29 +9,58 @@ authors = [
     {name = "Alan Zhang",email = "zhangalan54@gmail.com"},
     {name = "Daniel Alyoshin",email = "daniel.alyoshin@gmail.com"}
 ]
+maintainers = [
+    {name = "Daniel Alyoshin",email = "daniel.alyoshin@gmail.com"}
+]
 readme = "README.md"
-requires-python = ">=3.11,<3.12"
-dynamic = ["dependencies"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Database",
+]
+dependencies = [
+    "sqlalchemy>=2.0,<2.1",
+    "sqlalchemy-cloudflare-d1>=0.3.11,<0.5",
+]
 
-[tool.poetry]
-packages = [{include = "sqlalchemy_d1", from = "src"}]
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.2,<9.0.0",
+    "pytest-socket>=0.7.0",
+    "ruff>=0.16.8,<0.17.0",
+    "mypy>=1.18.2,<2.0.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11,<3.12"
-sqlalchemy = ">=1.4,<2"
-dbapi-d1 = ">=0.1.0"  # published version
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=8.4.2,<9.0.0"
-black = ">=25.9.0,<26.0.0"
-mypy = ">=1.18.2,<2.0.0"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[project.urls]
+Repository = "https://github.com/sqlalchemy-cf-d1/sqlalchemy-d1"
 
 [project.entry-points."sqlalchemy.dialects"]
 d1 = "sqlalchemy_d1.dialect:D1Dialect"
 
-# [tool.poetry.plugins."sqlalchemy.dialects"]
-# d1 = "sqlalchemy_d1.dialect:D1Dialect"
+[tool.poetry]
+packages = [{include = "sqlalchemy_d1", from = "src"}]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: runs against a real D1 database",
+]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
