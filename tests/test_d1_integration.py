@@ -164,6 +164,11 @@ class D1IntegrationTestSuite(unittest.TestCase):
 
         self.assertIn(self.view_name, inspector.get_view_names())
         self.assertNotIn(self.view_name, inspector.get_table_names())
+        self.assertTrue(inspector.has_table(self.view_name))
+        self.assertIn(
+            f"CREATE VIEW {self.view_name}",
+            inspector.get_view_definition(self.view_name),
+        )
 
         cols = inspector.get_columns(self.view_name)
         self.assertEqual(
