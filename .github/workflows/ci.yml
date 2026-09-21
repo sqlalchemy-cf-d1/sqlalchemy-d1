@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Weekly, so a new upstream release that breaks the dialect is noticed
+    - cron: "0 6 * * 1"
 
 permissions:
   contents: read
@@ -15,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,6 +32,20 @@ jobs:
           ruff format --check .
       - name: Type check
         run: mypy src
+      - name: Unit tests
+        run: pytest -m "not integration" --disable-socket
+
+  minimum-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install the lowest versions that pyproject.toml allows
+        run: |
+          pip install uv
+          uv pip install --system --resolution lowest-direct -e ".[dev]"
       - name: Unit tests
         run: pytest -m "not integration" --disable-socket
 
