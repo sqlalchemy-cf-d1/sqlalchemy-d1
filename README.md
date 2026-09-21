@@ -51,22 +51,27 @@ In Superset, use the same URL as the SQLAlchemy URI of the database connection.
 
 | Feature | Description |
 |---------|-------------|
-| `d1://` name | Registers the upstream dialect under the `d1` name that Superset uses. |
-| Date and boolean type names | A bare `DATETIME`, `TIMESTAMP`, `DATE`, `TIME` or `BOOLEAN` type prints its real name. Superset reads that name to decide if a column is a date. |
-| Date and boolean reflection | Columns declared as `DATETIME`, `TIMESTAMP`, `DATE`, `TIME` or `BOOLEAN` are reflected as those types. Upstream reflects them as `TEXT`. |
-| `autoincrement` | Reflected columns report `autoincrement`. It is true for a single `INTEGER PRIMARY KEY` column. |
-| Schema and view listing | `get_schema_names` returns `main` and `get_view_names` lists views. Upstream has neither. |
+| `d1://` name | Registers the upstream dialect under the `d1` name that Superset uses. Only the account, token and database ID are read from the URL. Query parameters are ignored. |
+| Date and boolean reflection | Columns declared as `DATETIME`, `TIMESTAMP`, `DATE`, `TIME`, `BOOLEAN` or `BOOL` are reflected as the types in `sqlalchemy_d1.types`. They behave like the upstream date and boolean types and keep the declared name. Superset reads that name to decide if a column is a date. Upstream reflects these columns as `TEXT`. |
+| `DECIMAL` reflection | Columns declared as `DECIMAL` are reflected as numeric. Upstream reflects them as `TEXT`. |
+| `autoincrement` | Reflected columns report `autoincrement`. It is true only for the column SQLite fills in by itself: a single primary key column declared as `INTEGER`, in a table that is not `WITHOUT ROWID`. |
+| Primary key order | A composite primary key is reflected in the order of the key, not the order of the columns. |
+| Schemas and views | `get_schema_names` returns `main`, `get_view_names` lists views and `get_view_definition` returns the SQL of a view. Upstream has none of these. `has_table` is also true for a view. |
 | Internal tables hidden | Tables and views that start with `_cf_`, such as `_cf_KV`, are left out of the lists. |
 
-Everything else comes from `sqlalchemy-cloudflare-d1` unchanged. That includes the connection, the cursor, the SQL compiler and the rest of reflection.
+Everything else comes from `sqlalchemy-cloudflare-d1` unchanged. That includes the connection, the cursor, the SQL compiler, and the reflection of foreign keys, indexes and unique constraints.
 
 ---
 
-## Known limit
+## Known limits
 
 Tables **created through SQLAlchemy** are identical to the ones upstream creates. A `DateTime` column is declared as `TEXT` and a `Boolean` column as `INTEGER`, so they are reflected as text and integer afterwards. Values still round trip correctly when you use the same `Table` object.
 
-Tables created with plain SQL and a `DATETIME` column, which is the normal case for D1, are reflected as dates.
+Tables created with plain SQL and a `DATETIME` column, which is the normal case for D1, are reflected as dates. A table reflected from D1 keeps its declared types when SQLAlchemy creates it again.
+
+Only the first word of a declared type is matched, so `TIMESTAMP WITH TIME ZONE` is a date and `UPDATED_INT` is an integer.
+
+**CHECK constraints** are not reflected. `get_check_constraints` returns an empty list, and `get_table_comment` returns no comment because SQLite has none.
 
 ---
 
