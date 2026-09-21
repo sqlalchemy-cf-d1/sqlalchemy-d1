@@ -24,6 +24,12 @@ pip install sqlalchemy-d1
 
 This also installs `sqlalchemy-cloudflare-d1` and SQLAlchemy 2.0. Python 3.11 or newer is required.
 
+If your Superset still uses **SQLAlchemy 1.4** (Superset 6.1.0, for example), stay on version 0.1.0. Newer versions would upgrade SQLAlchemy and break it.
+
+```bash
+pip install "sqlalchemy-d1==0.1.0"
+```
+
 ---
 
 ## Usage
