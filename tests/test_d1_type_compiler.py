@@ -16,6 +16,7 @@ from sqlalchemy import (
     literal_column,
     select,
 )
+from sqlalchemy.dialects import postgresql, sqlite
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.schema import CreateTable
 from sqlalchemy_cloudflare_d1.dialect import (
@@ -80,6 +81,21 @@ class D1TypeCompilerTestSuite(unittest.TestCase):
         for sqla_type, expected in cases:
             self.assertEqual(sqla_type.compile(dialect=self.dialect), expected)
             self.assertEqual(str(sqla_type), expected)
+
+    def test_reflected_types_compile_like_generic_types_elsewhere(self):
+        cases = [
+            (d1types.DATETIME(), DateTime()),
+            (d1types.TIMESTAMP(), TIMESTAMP()),
+            (d1types.DATE(), Date()),
+            (d1types.TIME(), Time()),
+            (d1types.BOOLEAN(), Boolean()),
+        ]
+        for other in [sqlite.dialect(), postgresql.dialect(), self.upstream]:
+            for declared, generic in cases:
+                self.assertEqual(
+                    declared.compile(dialect=other),
+                    generic.compile(dialect=other),
+                )
 
     def test_generic_types_compile_like_upstream(self):
         for sqla_type in [

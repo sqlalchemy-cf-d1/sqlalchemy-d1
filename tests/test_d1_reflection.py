@@ -11,6 +11,7 @@ from sqlalchemy import (
     text,
     types as sqltypes,
 )
+from sqlalchemy.dialects import postgresql, sqlite
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.schema import CreateTable
@@ -205,6 +206,19 @@ class D1ReflectionTestSuite(unittest.TestCase):
             "is_active BOOLEAN",
         ]:
             self.assertIn(column_ddl, ddl)
+
+    def test_reflected_table_can_be_created_on_other_dialects(self):
+        table = Table("events", MetaData(), autoload_with=self.engine)
+
+        on_sqlite = str(CreateTable(table).compile(dialect=sqlite.dialect()))
+        on_postgres = str(
+            CreateTable(table).compile(dialect=postgresql.dialect())
+        )
+
+        self.assertIn("created_at DATETIME", on_sqlite)
+        self.assertIn("is_active BOOLEAN", on_sqlite)
+        self.assertIn("created_at TIMESTAMP WITHOUT TIME ZONE", on_postgres)
+        self.assertIn("is_active BOOLEAN", on_postgres)
 
 
 if __name__ == "__main__":

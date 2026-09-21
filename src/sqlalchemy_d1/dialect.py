@@ -6,7 +6,6 @@ from sqlalchemy.engine import reflection
 from sqlalchemy_cloudflare_d1.dialect import CloudflareD1Dialect
 
 from . import types as d1types
-from .type_compiler import D1TypeCompiler
 
 INTERNAL_PREFIX = "_cf_"
 
@@ -32,7 +31,6 @@ def _visible(names):
 
 class D1Dialect(CloudflareD1Dialect):
     name = "d1"
-    type_compiler = D1TypeCompiler
     supports_statement_cache = True
 
     def create_connect_args(self, url):
