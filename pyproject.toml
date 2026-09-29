@@ -1,6 +1,6 @@
 [project]
 name = "sqlalchemy-d1"
-version = "0.2.0"
+version = "0.2.1"
 description = "SQLAlchemy dialect for Cloudflare D1"
 authors = [
     {name = "Chad Rossouw",email = "chadrossouw7247@gmail.com"},
