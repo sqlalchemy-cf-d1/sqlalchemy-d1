@@ -10,7 +10,7 @@ Since version 0.2.0 this package is a thin layer over [sqlalchemy-cloudflare-d1]
 
 Superset ships a built-in **Cloudflare D1** engine spec that expects `d1://` connection strings. See the [Superset D1 docs page](https://superset.apache.org/user-docs/databases/supported/cloudflare-d1/).
 
-Version 0.1.0 of this package only worked with SQLAlchemy 1.4. Superset has moved to SQLAlchemy 2.0, and its [UPDATING.md](https://github.com/apache/superset/blob/master/UPDATING.md) lists `d1` among the connectors that were held back because of that. Version 0.2.0 removes the block.
+Version 0.1.0 of this package only worked with SQLAlchemy 1.4. When Superset moved to SQLAlchemy 2.0, it held its `d1` extra back because of that. Version 0.2.0 works with SQLAlchemy 2.0. Since [apache/superset#44505](https://github.com/apache/superset/pull/44505), merged on 29 September 2026, the `d1` extra installs this package alone. See Superset's [UPDATING.md](https://github.com/apache/superset/blob/master/UPDATING.md).
 
 If you do not use Superset, install `sqlalchemy-cloudflare-d1` directly and use its `cloudflare_d1://` connection string.
 
@@ -72,6 +72,14 @@ Tables created with plain SQL and a `DATETIME` column, which is the normal case 
 Only the first word of a declared type is matched, so `TIMESTAMP WITH TIME ZONE` is a date and `UPDATED_INT` is an integer.
 
 **CHECK constraints** are not reflected. `get_check_constraints` returns an empty list, and `get_table_comment` returns no comment because SQLite has none.
+
+### From sqlalchemy-cloudflare-d1
+
+These come from the upstream driver and dialect, so this package has them too.
+
+* **Columns with the same name** all get the value of the last one, without an error. `SELECT a.id, b.id FROM a JOIN b ...` returns `b.id` twice, and so does `SELECT *` over a join where both tables have an `id`. Give the columns different names with `AS`. Reported as [#31](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/issues/31).
+* **Statements that do not start with `SELECT`, `PRAGMA` or `WITH`**, and have no `RETURNING`, come back without column names, so SQLAlchemy raises `This result object does not return rows`. That includes a query that starts with a comment, `EXPLAIN QUERY PLAN` and `VALUES`. Put a leading comment at the end of the query instead, with no semicolon after it. Reported as [#32](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/issues/32).
+* **Date and time values are written with a `T`**, such as `2026-09-21T09:00:00`. Data from other tools often has a space instead, and Superset writes its time filters with a space. SQLite compares both forms as text and a `T` sorts after a space, so comparing one form with the other can give the wrong rows. Keep dates in one form. SQLite's `datetime()` turns either form into the one with a space.
 
 ---
 
