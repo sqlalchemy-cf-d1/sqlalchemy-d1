@@ -99,8 +99,6 @@ Everything else comes from `sqlalchemy-cloudflare-d1` unchanged. That includes t
 
 These come from the upstream driver and dialect, so this package has them too.
 
-* **Columns with the same name** all get the value of the last one, without an error. `SELECT a.id, b.id FROM a JOIN b ...` returns `b.id` twice, and so does `SELECT *` over a join where both tables have an `id`. Give the columns different names with `AS`. Reported as [#31](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/issues/31).
-* **Statements that do not start with `SELECT`, `PRAGMA` or `WITH`**, and have no `RETURNING`, come back without column names, so SQLAlchemy raises `This result object does not return rows`. That includes a query that starts with a comment, `EXPLAIN QUERY PLAN` and `VALUES`. Put a leading comment at the end of the query instead, with no semicolon after it. Reported as [#32](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/issues/32).
 * **Date and time values are written with a `T`**, such as `2026-09-21T09:00:00`. Data from other tools often has a space instead, and Superset writes its time filters with a space. SQLite compares both forms as text and a `T` sorts after a space, so comparing one form with the other can give the wrong rows. Keep dates in one form. SQLite's `datetime()` turns either form into the one with a space.
 
 ## Development
