@@ -6,9 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-04
+
 ### Changed
 
+* Requires `sqlalchemy-cloudflare-d1` 0.4.1 or newer. It was 0.3.11.
 * Reworked the README layout, with badges, a compatibility table and a contributing section. The content is unchanged.
+* "Known limits" in the README no longer lists the two limits fixed below.
+
+### Fixed
+
+* Columns with the same name each get their own value. They all got the value of the last one before. Fixed in `sqlalchemy-cloudflare-d1` 0.4.1 ([#34](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/pull/34)).
+* Statements that start with a comment, `EXPLAIN` or `VALUES` come back with column names, so SQLAlchemy returns their rows. Fixed in `sqlalchemy-cloudflare-d1` 0.4.1 ([#33](https://github.com/CollierKing/sqlalchemy-cloudflare-d1/pull/33)).
 
 ## [0.2.1] - 2026-09-29
 

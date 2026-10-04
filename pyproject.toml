@@ -1,6 +1,6 @@
 [project]
 name = "sqlalchemy-d1"
-version = "0.2.1"
+version = "0.2.2"
 description = "SQLAlchemy dialect for Cloudflare D1"
 authors = [
     {name = "Chad Rossouw",email = "chadrossouw7247@gmail.com"},
@@ -26,7 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "sqlalchemy>=2.0,<2.1",
-    "sqlalchemy-cloudflare-d1>=0.3.11,<0.5",
+    "sqlalchemy-cloudflare-d1>=0.4.1,<0.5",
 ]
 
 [project.optional-dependencies]

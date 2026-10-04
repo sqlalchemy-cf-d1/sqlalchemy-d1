@@ -512,14 +512,14 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "sqlalchemy-cloudflare-d1"
-version = "0.4.0"
+version = "0.4.1"
 description = "A SQLAlchemy dialect for Cloudflare's D1 Serverless SQLite Database"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "sqlalchemy_cloudflare_d1-0.4.0-py3-none-any.whl", hash = "sha256:c6d0808aea73ed32f295c656bf57036fdba8d5ca1ef3ca7730a05d836ea8f0fa"},
-    {file = "sqlalchemy_cloudflare_d1-0.4.0.tar.gz", hash = "sha256:530591c3833d775e7ac0fb5fcd5732d7579d9fcc133d8861af436e341a54e53d"},
+    {file = "sqlalchemy_cloudflare_d1-0.4.1-py3-none-any.whl", hash = "sha256:a7c3fb0414e41136459c3e18a9a2565a8003c9a9726875128f7756b012b0594f"},
+    {file = "sqlalchemy_cloudflare_d1-0.4.1.tar.gz", hash = "sha256:3a2cd1b8c0ac126b4853802a9d254dd02a476fd574b99a4e5b1e4a6552f8e217"},
 ]
 
 [package.dependencies]
@@ -551,4 +551,4 @@ dev = ["mypy", "pytest", "pytest-socket", "ruff"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "f4a4164792ade23b597bbbcf0b750bca2dce994f03f41938fae87af4fce8ac3b"
+content-hash = "e5342dca435f135fbb0773516feb8b73d15a68416dee3a419c7f2a4f4194dc2d"
